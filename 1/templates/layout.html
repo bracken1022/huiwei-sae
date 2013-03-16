@@ -1,0 +1,119 @@
+    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Lovey</title>
+        
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+        
+ 	<!--bootstrap-->
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+	<link href="static/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="static/css/bootstrap.min.css" rel="stylesheet"> 
+         
+	<!== Le styles -->
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap-responsive.css">
+  <link rel="stylesheet" type="text/css" href="static/css/style.css">
+ 
+
+</head>
+
+        
+
+  <body>
+    <!--nav bar-->
+    <div class="navbar">
+    	<div class="navbar-inner">
+        <!--SHOWR-->
+        <a class="brand" href="/">LOVEY<a>
+        
+        {% if username %}
+          <a class="brand">{{username}}</a>
+        {% endif %}
+        
+        <!--LOGIN-->
+        {% if username %}
+        <form class="navbar-form pull-right" action="/logout">
+    		<button type="submit" class="btn">退出</button>
+    	</form>
+        {% else %}
+        <form class="navbar-form pull-right" action="/login_to_weibo">
+    		<button type="submit" class="btn">登陆</button>
+    	</form>
+        {% endif %}
+        
+
+        
+        <!--NEARBY-->
+        {% if username %}
+        <form class="navbar-form pull-right" action="/weibo_poi_get">
+    		<button type="submit" class="btn">附近</button>
+    	</form>     
+        {% endif %}
+        
+        <!--timeline-->
+        {% if username %}
+        <form class="navbar-form pull-right" action="/weibo_user_show">
+    		<button type="submit" class="btn">时间线</button>
+    	</form>     
+        {% endif %}
+       
+        <!--SEARCH-->
+        {% if username %}
+        <form class="navbar-form pull-right" action="/weibo_position_search_data">
+          <input type="text" name="address" />
+          <!--<input type="submit" />-->
+          <button type="submit2" class="btn">查找</button>
+        </form>
+        {% endif %}
+    	</div>
+        
+
+    </div>
+
+
+  <div class="row">
+
+    {% block content %}{% endblock %}
+ 
+  </div>
+
+
+
+
+    <!-- Footer
+    ================================================== -->
+    <footer class="footer">
+      <div class="container">
+        <p>Designed and built with all the love in the world by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>.</p>
+        <p>Code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a>.</p>
+        <p><a href="http://glyphicons.com/" target="_blank">Glyphicons Free</a> licensed under <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a>.</p>
+        <ul class="footer-links">
+          <li><a href="http://www.bootcss.com/about.html" target="_blank">关于</a></li>
+          <li class="muted">·</li>
+          <li><a href="https://github.com/twitter/bootstrap/issues?state=open" target="_blank">问题反馈</a></li>
+          <li class="muted">·</li>
+          <li><a href="https://github.com/twitter/bootstrap/blob/master/CHANGELOG.md">版本变更记录</a></li>
+          <li><a href="http://www.miibeian.gov.cn/" target="_blank"></a></li>
+        </ul>
+      </div>
+    </footer>
+
+
+
+
+
+
+        
+
+
+
+  </body>
+
+
+
+</html>
