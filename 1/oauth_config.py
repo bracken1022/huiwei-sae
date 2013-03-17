@@ -7,4 +7,7 @@ WEIBO_CONFIG = {
 }
 
 QQ_CONFIG = {
+    "APP_KEY": "801328345",
+    "APP_SECRET": "f48a7788a82e29b0157aa7f92ae69462",
+    "REDIRECT_URI": "http://huiwei.sinaapp.com/oauth_qq",
 }

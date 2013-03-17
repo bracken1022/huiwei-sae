@@ -42,18 +42,18 @@
     	</form>
         {% else %}
         <form class="navbar-form pull-right" action="/login_to_weibo">
-    		<button type="submit" class="btn">登陆</button>
+    		<button type="submit" class="btn">登陆weibo</button>
     	</form>
         {% endif %}
         
 
         
-        <!--NEARBY-->
-        {% if username %}
-        <form class="navbar-form pull-right" action="/weibo_poi_get">
-    		<button type="submit" class="btn">附近</button>
+        <!--LOGIN QQ-->
+
+        <form class="navbar-form pull-right" action="/login_to_qq">
+    		<button type="submit" class="btn">登录QQ</button>
     	</form>     
-        {% endif %}
+
         
         <!--timeline-->
         {% if username %}
