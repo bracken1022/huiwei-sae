@@ -2,20 +2,52 @@
 
 {% block content %}
 
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+
 
 <div class="container">
 	<div class="row">
 		<div class="span6">
-			<p>content_weibo</p>
-			<p>{{content_weibo}}</p>
+			<div id="qq_data">
+				{{content_qq}}
+			</div>
 		</div>
 		<div class="span6">
-			<p>content_qq</p>
-            <p>{{content_qq}}</p>
+			<div id="weibo_data">
+				{{content_weibo}}
+			</div>
 		</div>
 	</div>
 </div>
 
+
+<script type="text/javascript">
+
+getData = function( data )
+{
+	var d = data.content_weibo;
+	$("p").append(data.content_weibo);
+}
+
+$(document).ready(function(){
+   
+      
+      $.getJSON( $SCRIPT_ROOT + '/ajax_weibo_data', '', function( data ){
+      	var d = data.content_weibo;
+      	$("#weibo_data").text(data.content_weibo);
+      } )
+
+      $.getJSON( $SCRIPT_ROOT + '/ajax_qq_data', '', function( data ){
+      	$("#qq_data").text(data.content_qq);
+      })
+      
+
+    });
+
+
+</script>
 
 
 

@@ -1,0 +1,48 @@
+
+
+<html>
+  <body>
+    {% if content_qq %}
+    <p>{{content_qq}}</p>
+    {% else %}
+    <a href="/login_to_qq">login to qq</a>
+    {% endif %}
+  </body>
+</html>
+
+<!--<div class="container">
+    <div class="row">
+        <div class="span6">
+            <p>weibo</p>
+            <ul>
+            {% for con in content_weibo %}
+                <li>
+                  <ul>
+                    {% for c in con %}
+                      <li>
+                        {{c}}::{{con[c]}}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div class="span6">
+            <p>qq</p>
+            <ul>
+            {% for con in content_qq %}
+              <li>
+                {{con}}
+                <p>from:{{con['nick']}}</p>
+                <p>text:{{con['text']}}</p>
+                <p>location:{{con['location']}}</p>
+                <img src={{con['image'][0]}}>
+
+                
+              </li> 
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>-->

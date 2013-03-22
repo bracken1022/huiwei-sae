@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<body>
+    <ul>
+    {% for con in content_weibo %}
+        <li>
+          <ul>
+            {% for c in con %}
+              <li>
+                {{c}}::{{con[c]}}
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+    {% endfor %}
+    </ul>
+</body>

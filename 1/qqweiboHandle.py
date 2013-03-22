@@ -4,19 +4,29 @@ from qqweibo import APIClient
 from oauth_config import QQ_CONFIG
 
 
+class QqWeibo(object):
+    """docstring for QqWeibo"""
+    def __init__(self, app_key = "", app_secret = "", redirect_uri = "" ):
+        self.app_key = app_key
+        self.app_secret = app_secret
+        self.redirect_uri = redirect_uri
 
+    def CreateClient( self, app_key, app_secret, redirect_uri ):
+        self.client = APIClient( app_key, app_secret, redirect_uri = redirect_uri )
+        return self.client
 
-def GetClient():
-    client = APIClient( QQ_CONFIG['APP_KEY'], QQ_CONFIG['APP_SECRET'], redirect_uri=QQ_CONFIG['REDIRECT_URI'] )
-    return client
+    def LoginToQq( self ):
+        client = self.CreateClient( self.app_key, self.app_secret, self.redirect_uri )
+        return client.get_authorize_url()
 
-def loginQq():
-    client = GetClient()
-    return client.get_authorize_url()
+    def GetQqAccessToken( self, code, open_id ):
+        client = self.CreateClient( self.app_key, self.app_secret, self.redirect_uri )
+        recived = self.client.request_access_token( code )
+        self.client.set_access_token( recived.access_token, open_id, recived.expires_in )
+        return recived.access_token
 
-def getQQAccessToken( code, open_id ):
-    client = GetClient()
-    rec = client.request_access_token( code )
-    client.set_access_token(rec.access_token, open_id, rec.expires_in)
-    content = client.get.statuses__home_timeline()
-    return content
+    def GetClient( self ):
+        return self.client
+        
+        
+        
