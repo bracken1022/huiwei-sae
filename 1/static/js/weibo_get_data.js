@@ -1,114 +1,51 @@
 
-$(document).ready(function(){
-   
-      
-      fetchItems_from_place_photos();
-      
 
-    });
-
-
-
-
-    
-    fetchItems = function () { 
-
-        var url = '/weibodata';
-        $.ajax({
-            url: url,
-            type: "GET",
-            dataType: "json",
-            context: this,
-          success:fetchCallback
-        });
-    }; 
-    
-    fetchCallback = function(obj, textStatus, xhr) {
-        xhr = null;
-        
-        var lat1 = obj.weiboDict[0].geo.coordinates[0];
-        var lng1 = obj.weiboDict[0].geo.coordinates[1];
-        
-        map = new GMaps({
-        div: '#map',
-        lat: lat1,
-        lng: lng1,
-        height: '600px'
-      });
-      
-
-        
-        
-    };
-    
-    fetchItems_from_place_photos = function()
-    {
-        var url = '/weibo_poi_data';
-      $.ajax({
-        url: url,
-        type: "GET",
-        dataType: "json",
-        context: this,
-        success:fetchCallback_place_photos
-      });
-      
-
-    };
-    
-    fetchCallback_place_photos = function(obj, textStatus, xhr) {
-        xhr = null;
-        var i = 0;
-        var lat1 = obj.data[0].geo.coordinates[0];
-        var lng1 = obj.data[0].geo.coordinates[1];
-        
-        map = new GMaps({
-        div: '#map',
-        lat: lat1,
-        lng: lng1,
-        height: '675px'
-        
-        
-        
-        });
-      
-      
-
-     $("#info").tmpl(obj.data).appendTo("#container1");
-      
-        
-    for ( i = 0; i < obj.data.length; i++ ) 
+    GetWeiboData = function()
     {
 
-        var text = obj.data[i].text
-        var img_url = obj.data[i].original_pic
+    $.getJSON( $SCRIPT_ROOT + '/ajax_weibo_data', '', function( data ){
 
-        
-        map.addMarker({
-            lat: obj.data[i].geo.coordinates[0],
-            lng: obj.data[i].geo.coordinates[1],
-            title: 'Marker with InfoWindow',
-            infoWindow: {
-              content: '<p>'+text+'</p>'+'</br><img src='+img_url+'>'
+        AppendWeiboData( data.content_weibo );
+        } );
+
+
+    };
+
+    AppendWeiboData = function( listData )
+    {
+        var result = ""
+
+        $("#weibo_data").append( "<ul>" );
+        for (var i = 0; i <= listData.length; i++) {
+
+            var result = "";
+
+            if ( listData[i] == null ) {
+                return;
+            };
+
+            if ( listData[i].hasOwnProperty('user') )
+            {
+                var user = listData[i].user.name;
+                result += user + "<br>";
+                result += "<img src=\"" + listData[i].user.profile_image_url +"\">" + "<br>";
+
             }
-          });
-    }
-    
 
-    
-        
-    };
-    
-   fetchCallback_place_photos1 = function(obj, textStatus, xhr) {
-        xhr = null;
-        var i = 0;
-        var lat1 = obj.data[0].geo.coordinates[0];
-        var lng1 = obj.data[0].geo.coordinates[1];
-        
-        window.img_data = obj.data[0].original_pic;
-        
-       
-    
+            if ( listData[i].hasOwnProperty('retweeted_status') )
+            {
+                var retweeted_pic = listData[i].retweeted_status.original_pic;
+                result += "<img src=\"" + retweeted_pic +"\">" + "<br>";
 
-    
-        
+                var text = listData[i].retweeted_status.text;
+                result += "<p>" + text + "</p>";
+            }
+
+
+
+            
+            $("#weibo_data").append( "<li>" + result + "</li>" );
+            
+        };  
+        $("#weibo_data").append("</ul>");
     };

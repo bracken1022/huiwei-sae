@@ -9,43 +9,48 @@
 
 <div class="container">
 	<div class="row">
+
+		<!--qqwebo&part-->
 		<div class="span6">
 			<div id="qq_data">
-				{{content_qq}}
+				<ul>
+				{% for content in content_qq %}
+					<li>
+						<p>{{content.from}}</p>
+						<p>{{content.text}}</p>
+					</li>
+				{% endfor %}
+				</ul>
 			</div>
 		</div>
+
+		<!--weibo&part-->
 		<div class="span6">
 			<div id="weibo_data">
-				{{content_weibo}}
+				<ul>
+				{% for content in content_weibo %}
+					<li>
+						<ul>
+							{% for con in content%}
+							<li>{{con}}::::{{content[con]}}</li>
+							{% endfor %}
+						</ul>
+					</li>
+				{% endfor %}
+				</ul>
 			</div>
 		</div>
 	</div>
 </div>
 
 
+
 <script type="text/javascript">
 
-getData = function( data )
-{
-	var d = data.content_weibo;
-	$("p").append(data.content_weibo);
-}
-
 $(document).ready(function(){
-   
-      
-      $.getJSON( $SCRIPT_ROOT + '/ajax_weibo_data', '', function( data ){
-      	var d = data.content_weibo;
-      	$("#weibo_data").text(data.content_weibo);
-      } )
-
-      $.getJSON( $SCRIPT_ROOT + '/ajax_qq_data', '', function( data ){
-      	$("#qq_data").text(data.content_qq);
-      })
-      
-
-    });
-
+	GetWeiboData();
+    GetQQData();
+});
 
 </script>
 

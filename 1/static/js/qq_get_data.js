@@ -1,114 +1,62 @@
 
-$(document).ready(function(){
-   
-      
-      fetchItems_from_place_photos();
-      
 
-    });
+GetQQData = function(){
 
-
-
-
-    
-    fetchItems = function () { 
-
-        var url = '/weibodata';
-        $.ajax({
-            url: url,
-            type: "GET",
-            dataType: "json",
-            context: this,
-          success:fetchCallback
-        });
-    }; 
-    
-    fetchCallback = function(obj, textStatus, xhr) {
-        xhr = null;
-        
-        var lat1 = obj.weiboDict[0].geo.coordinates[0];
-        var lng1 = obj.weiboDict[0].geo.coordinates[1];
-        
-        map = new GMaps({
-        div: '#map',
-        lat: lat1,
-        lng: lng1,
-        height: '600px'
+    $.getJSON( $SCRIPT_ROOT + '/ajax_qq_data', '', function( data ){
+        //$("#qq_data").text(data.content_qq);
+        AppendQQData( data.content_qq );
       });
-      
 
-        
-        
-    };
-    
-    fetchItems_from_place_photos = function()
+    AppendQQData = function( listData )
     {
-        var url = '/weibo_poi_data';
-      $.ajax({
-        url: url,
-        type: "GET",
-        dataType: "json",
-        context: this,
-        success:fetchCallback_place_photos
-      });
-      
+        $("#qq_data").text("");
+        $("#qq_data").append( "<ul>" );
+        for (var i = 0; i <= listData.length; i++) {
 
-    };
-    
-    fetchCallback_place_photos = function(obj, textStatus, xhr) {
-        xhr = null;
-        var i = 0;
-        var lat1 = obj.data[0].geo.coordinates[0];
-        var lng1 = obj.data[0].geo.coordinates[1];
-        
-        map = new GMaps({
-        div: '#map',
-        lat: lat1,
-        lng: lng1,
-        height: '675px'
-        
-        
-        
-        });
-      
-      
+            var result = "";
 
-     $("#info").tmpl(obj.data).appendTo("#container1");
-      
-        
-    for ( i = 0; i < obj.data.length; i++ ) 
-    {
+            if ( listData[i] == null ) {
+                return;
+            };
 
-        var text = obj.data[i].text
-        var img_url = obj.data[i].original_pic
-
-        
-        map.addMarker({
-            lat: obj.data[i].geo.coordinates[0],
-            lng: obj.data[i].geo.coordinates[1],
-            title: 'Marker with InfoWindow',
-            infoWindow: {
-              content: '<p>'+text+'</p>'+'</br><img src='+img_url+'>'
+            if ( listData[i].hasOwnProperty('from') )
+            {
+                var from_str = listData[i].from;
+                result += from_str + "<br>";
             }
-          });
-    }
-    
 
-    
-        
-    };
-    
-   fetchCallback_place_photos1 = function(obj, textStatus, xhr) {
-        xhr = null;
-        var i = 0;
-        var lat1 = obj.data[0].geo.coordinates[0];
-        var lng1 = obj.data[0].geo.coordinates[1];
-        
-        window.img_data = obj.data[0].original_pic;
-        
-       
-    
+            if ( listData[i].hasOwnProperty('from_url') )
+            {
+                var from_url = listData[i].from_url;
+                result += from_url + "<br>";
+            }
 
-    
-        
+            if ( listData[i].hasOwnProperty('image') && listData[i].image != null )
+            {
+                var image_url = listData[i].image;
+                result += "<img src=\"" + image_url +"\"><br>";
+            }
+
+            if ( listData[i].hasOwnProperty('location' )) 
+            {
+                var location = listData[i].location;
+                result += location + "<br>";
+            }
+
+            if ( listData[i].hasOwnProperty('name') ) {
+                var name = listData[i].name;
+                result += name + "<br>";
+            };
+
+            if ( listData[i].hasOwnProperty('text') ) {
+                var text = listData[i].text;
+                result += text + "<br>";
+            };
+            
+            $("#qq_data").append( "<li>" + result + "</li>" );
+            
+        };  
+        $("#qq_data").append("</ul>");
     };
+
+};

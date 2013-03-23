@@ -5,6 +5,8 @@ import urllib2
 
 from oauth_config import QQ_CONFIG
 
+import simplejson as json
+
 from weiboHandle import *
 from qqweiboHandle import *
 
@@ -16,6 +18,30 @@ sys.setdefaultencoding('utf-8')
 app = Flask(__name__)
 app.debug = True
 app.secret_key = 'A0Zr98j/wang/bracken/3yX R~XHH!jmN]LWX/,?RT'
+
+
+class JsonObject(dict):
+    '''
+    general json object that can bind any fields but also act as a dict.
+    '''
+    def __getattr__(self, attr):
+        try:
+            return self[attr]
+        except KeyError:
+            raise AttributeError(r"'JsonDict' object has no attribute '%s'" % attr)
+
+    def __setattr__(self, attr, value):
+        self[attr] = value
+
+def _obj_hook(pairs):
+    '''
+    convert json object to python object.
+    '''
+    o = JsonObject()
+    for k, v in pairs.iteritems():
+        o[str(k)] = v
+    return o
+
 
 @app.route('/')
 def home_page():
@@ -47,10 +73,13 @@ def ajax_weibo_data():
     try:
         resp = urllib2.urlopen(urllib2.Request( url_str ) )
         body = resp.read()
+        content_weibo = json.loads( body, object_hook = _obj_hook  )
+        content_weibo = content_weibo.statuses
+        
     except urllib2.HTTPError, e:
         body = e.read()
 
-    return jsonify( content_weibo = body )
+    return jsonify( content_weibo = content_weibo )
 
 
 @app.route('/login_to_qq')
@@ -85,10 +114,14 @@ def ajax_qq_data():
     try:
         resp = urllib2.urlopen(urllib2.Request( url_str ) )
         body = resp.read()
+        content_qq = json.loads( body, object_hook = _obj_hook )
+        #content_qq = json.dumps( content_qq['data']['info'] )
+        content_qq =  content_qq.data.info 
+
     except urllib2.HTTPError, e:
         body = e.read()
 
-    return jsonify( content_qq = body )
+    return jsonify( content_qq = content_qq )
     #return render_template( 'qq_homepage.html', content_qq = (body) )
 
         
